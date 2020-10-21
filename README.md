@@ -1,2 +1,6 @@
 # cloudComputing
 云计算
+
+parameter.py存一些参数，包括url，header和cookies
+dataAcquisition是主要的爬取的py
+result里面是根据时间存储的爬取下来的信息
