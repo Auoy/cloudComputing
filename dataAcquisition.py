@@ -75,7 +75,7 @@ def savedata(title, s_url, source, media_url,time_table,time_change):  # 存储�
 	wb.save(filename=filename)  # 保存文件
 
 def main(max_behot_time, title, source_url, s_url, source, media_url):   # 主函数
-	for i in range(20):   # 此处的数字类似于你刷新新闻的次数，正常情况下刷新一次会出现10条新闻，但夜存在少于10条的情况；所以最后的结果并不一定是10的倍数
+	for i in range(200):   # 此处的数字类似于你刷新新闻的次数，正常情况下刷新一次会出现10条新闻，但夜存在少于10条的情况；所以最后的结果并不一定是10的倍数
 		ascp = get_as_cp()    # 获取as和cp参数的函数
 		demo = getdata(parameter.start_url + max_behot_time + '&max_behot_time_tmp=' + max_behot_time + '&tadrequire=true&as=' + ascp['as'] + '&cp=' + ascp['cp'],
                        parameter.headers, parameter.cookies)
