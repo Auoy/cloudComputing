@@ -16,6 +16,7 @@ source = []      # 存储发布新闻的公众号
 media_url = {}   # 存储公众号的完整链接
 time_table=[]	 # 时间戳
 time_change=[]	 #  转化后的标准时间的时间戳
+chinese_tag=[]  #新闻类型
 
 def get_as_cp():  # 该函数主要是为了获取as和cp参数，程序参考今日头条中的加密js文件：home_4abea46.js
 	zz = {}
@@ -47,10 +48,10 @@ def getdata(url, headers, cookies):  # 解析网页函数
 	r = requests.get(url, headers=headers, cookies=cookies)
 	print(url)
 	data = json.loads(r.text)
-	#print(r.text)
+	print(r.text)
 	return data
 
-def savedata(title, s_url, source, media_url,time_table,time_change):  # 存储数据到文件
+def savedata(title, s_url, source, media_url,time_table,time_change,chinese_tag):  # 存储数据到文件
 	# 存储数据到xlxs文件
 	wb = Workbook()
 	if not os.path.isdir(os.getcwd()+'/result'):   # 判断文件夹是否存在
@@ -64,6 +65,7 @@ def savedata(title, s_url, source, media_url,time_table,time_change):  # 存储�
 	ws['D1'] = '头条号链接'
 	ws['E1'] = '时间戳'
 	ws['F1'] = '标准时间'
+	ws['G1'] = '新闻类型'
 	for row in range(2, len(title)+2):   # 将数据写入表格
 		_= ws.cell(column=1, row=row, value=title[row-2])
 		_= ws.cell(column=2, row=row, value=s_url[row-2])
@@ -71,16 +73,17 @@ def savedata(title, s_url, source, media_url,time_table,time_change):  # 存储�
 		_= ws.cell(column=4, row=row, value=media_url[source[row-2]])
 		_=ws.cell(column=5,row=row,value=time_table[row-2])
 		_=ws.cell(column=6,row=row,value=time_change[row-2])
+		_ = ws.cell(column=7, row=row, value=chinese_tag[row - 2])
 
 	wb.save(filename=filename)  # 保存文件
 
-def main(max_behot_time, title, source_url, s_url, source, media_url):   # 主函数
-	for i in range(170):   # 此处的数字类似于你刷新新闻的次数，正常情况下刷新一次会出现10条新闻，但夜存在少于10条的情况；所以最后的结果并不一定是10的倍数
+def main(max_behot_time, title, source_url, s_url, source, media_url,chinese_tag):   # 主函数
+	for i in range(100):   # 此处的数字类似于你刷新新闻的次数，正常情况下刷新一次会出现10条新闻，但夜存在少于10条的情况；所以最后的结果并不一定是10的倍数
 		ascp = get_as_cp()    # 获取as和cp参数的函数
 		demo = getdata(parameter.start_url + max_behot_time + '&max_behot_time_tmp=' + max_behot_time + '&tadrequire=true&as=' + ascp['as'] + '&cp=' + ascp['cp'],
                        parameter.headers, parameter.cookies)
 		print(demo)
-		# time.sleep(1)
+		time.sleep(1)
 		for j in range(len(demo['data'])):
 			# print(demo['data'][j]['title'])
 			if demo['data'][j]['title'] not in title:
@@ -91,6 +94,10 @@ def main(max_behot_time, title, source_url, s_url, source, media_url):   # 主�
 				timeArray=time.localtime(demo['data'][j]['behot_time'])
 				otherTimeStyle=time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
 				time_change.append(otherTimeStyle)
+				if("chinese_tag" in demo['data'][j]):
+					chinese_tag.append(demo['data'][j]['chinese_tag'])
+				else:
+					chinese_tag.append("unknown")
 			if demo['data'][j]['source'] not in media_url:
 				media_url[demo['data'][j]['source']] = parameter.url + demo['data'][j]['media_url']  # 获取公众号链接
 		print(max_behot_time)
@@ -106,8 +113,9 @@ def main(max_behot_time, title, source_url, s_url, source, media_url):   # 主�
 				# print('源链接：', url+source_url[index])
 			print('头条号：', source[index])
 			print('时间戳',time_change[index])
+			print('新闻类型',chinese_tag[index])
 			print(len(title))   # 获取的新闻数量
 
 if __name__ == '__main__':
-	main(max_behot_time, title, source_url, s_url, source, media_url)
-	savedata(title, s_url, source, media_url,time_table,time_change)
+	main(max_behot_time, title, source_url, s_url, source, media_url,chinese_tag)
+	savedata(title, s_url, source, media_url,time_table,time_change,chinese_tag)
