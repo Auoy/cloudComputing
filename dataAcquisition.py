@@ -56,7 +56,8 @@ def savedata(title, s_url, source, media_url,time_table,time_change,chinese_tag)
 	wb = Workbook()
 	if not os.path.isdir(os.getcwd()+'/result'):   # 判断文件夹是否存在
 		os.makedirs(os.getcwd()+'/result') # 新建存储文件夹
-	filename = os.getcwd()+'/result/result-'+datetime.datetime.now().strftime('%Y-%m-%d-%H-%m')+'.xlsx' # 新建存储结果的excel文件
+	filename = os.getcwd()+'/result/result-'+datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')+'.xlsx'
+	# 新建存储结果的excel文件
 	ws = wb.active
 	ws.title = 'data'   # 更改工作表的标题
 	ws['A1'] = '标题'   # 对表格加入标题
@@ -74,11 +75,10 @@ def savedata(title, s_url, source, media_url,time_table,time_change,chinese_tag)
 		_=ws.cell(column=5,row=row,value=time_table[row-2])
 		_=ws.cell(column=6,row=row,value=time_change[row-2])
 		_ = ws.cell(column=7, row=row, value=chinese_tag[row - 2])
-
 	wb.save(filename=filename)  # 保存文件
 
 def main(max_behot_time, title, source_url, s_url, source, media_url,chinese_tag):   # 主函数
-	for i in range(100):   # 此处的数字类似于你刷新新闻的次数，正常情况下刷新一次会出现10条新闻，但夜存在少于10条的情况；所以最后的结果并不一定是10的倍数
+	for i in range(1):   # 此处的数字类似于你刷新新闻的次数，正常情况下刷新一次会出现10条新闻，但夜存在少于10条的情况；所以最后的结果并不一定是10的倍数
 		ascp = get_as_cp()    # 获取as和cp参数的函数
 		demo = getdata(parameter.start_url + max_behot_time + '&max_behot_time_tmp=' + max_behot_time + '&tadrequire=true&as=' + ascp['as'] + '&cp=' + ascp['cp'],
                        parameter.headers, parameter.cookies)
@@ -102,7 +102,16 @@ def main(max_behot_time, title, source_url, s_url, source, media_url,chinese_tag
 				media_url[demo['data'][j]['source']] = parameter.url + demo['data'][j]['media_url']  # 获取公众号链接
 		print(max_behot_time)
 		max_behot_time = str(demo['next']['max_behot_time'])  # 获取下一个链接的max_behot_time参数的值
+		shu = {}
 		for index in range(len(title)):
+			collect = {}
+			collect['title'] = title[index]
+			collect['url'] = source_url[index]
+			collect['source'] = source[index]
+			collect['media_url'] = media_url[source[index]]
+			collect['time'] = time_change[index]
+			collect['tags'] = chinese_tag[index]
+			shu[index] = collect
 			print('标题：', title[index])
 			if 'https' not in source_url[index]:
 				s_url.append(parameter.url + source_url[index])
@@ -115,6 +124,10 @@ def main(max_behot_time, title, source_url, s_url, source, media_url,chinese_tag
 			print('时间戳',time_change[index])
 			print('新闻类型',chinese_tag[index])
 			print(len(title))   # 获取的新闻数量
+		json_str = json.dumps(shu, ensure_ascii=False)
+		s = "result-" + datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + '.json'
+		with open(s, 'w',encoding='utf-8') as json_file:
+			json_file.write(json_str)
 
 if __name__ == '__main__':
 	main(max_behot_time, title, source_url, s_url, source, media_url,chinese_tag)
