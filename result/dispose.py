@@ -40,4 +40,4 @@ class Convert():
         json.dump(jsonLine, open(fileName + ".json", "w", encoding="utf-8"),ensure_ascii=False)
 
 if __name__ == "__main__":
-    Convert.xls2json("result-2020-10-22-16-10",1000,6)
+    Convert.xls2json("result-2020-11-24-10-50-52",1000,7)#第二个参数是行数 第三个参数不需要改
