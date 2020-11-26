@@ -6,7 +6,7 @@ from openpyxl import Workbook, load_workbook
 import json
 
 
-class Convert():
+class Convert:
 
     @staticmethod
     def json2xls(fileName):
@@ -37,7 +37,8 @@ class Convert():
             for col in range(1, c + 1):
                 dict_v[list_key[col - 1]] = ws.cell(row=row, column=col).value
             jsonLine.append(dict_v)
-        json.dump(jsonLine, open(fileName + ".json", "w", encoding="utf-8"),ensure_ascii=False)
+        json.dump(jsonLine, open(fileName + ".json", "w", encoding="utf-8"), ensure_ascii=False)
+
 
 if __name__ == "__main__":
-    Convert.xls2json("result-2020-11-24-10-50-52",1000,7)#第二个参数是行数 第三个参数不需要改
+    Convert.xls2json("result-2020-11-24-10-50-52", 1000, 7)  # 第二个参数是行数 第三个参数不需要改

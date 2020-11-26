@@ -5,6 +5,9 @@ import time
 import hashlib
 import os
 import datetime
+
+from pymongo import MongoClient
+
 import parameter
 
 # 数据区
@@ -136,8 +139,19 @@ def convertJson():
         shu[index] = collect
     json_str = json.dumps(shu, ensure_ascii=False)
     s = "result-" + datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + '.json'
+    host = '127.0.0.1'  # 本机ip地址
+    client = MongoClient(host, 27017)  # 建立客户端对象
+    write_to_mongodb(client, json_str)
     with open(s, 'w', encoding='utf-8') as json_file:
         json_file.write(json_str)
+
+
+# 将读到的标题数据写入 MongoDB 中，在 convertJson() 方法中调用
+def write_to_mongodb(client, data):
+    db = client.mydb  # 连接mydb数据库，没有则自动创建
+    myset = db.testset  # 使用test_set集合，没有则自动创建
+    for val in eval(data).values():
+        myset.insert_one(val)
 
 
 if __name__ == '__main__':
