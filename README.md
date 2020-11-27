@@ -4,3 +4,10 @@
 parameter.py存一些参数，包括url，header和cookies
 dataAcquisition是主要的爬取的py
 result里面是根据时间存储的爬取下来的信息
+
+词云展示
+
+首先启动hdfs
+进入code文件夹运行Stream.py
+Stream.py会监听hdfs上的words文件夹，一旦有新文件加入，则将结果进行分词
+最后会把分词结果以词云图片的形式展示出来
