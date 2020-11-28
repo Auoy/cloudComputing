@@ -127,6 +127,8 @@ def main(max_behot_time, title, source_url, s_url, source, media_url, chinese_ta
 
 
 def convertJson():
+    if not os.path.isdir(os.getcwd() + '/json'):  # 判断文件夹是否存在
+        os.makedirs(os.getcwd() + '/json')  # 新建存储文件夹
     shu = {}
     for index in range(len(title)):
         collect = {}
@@ -138,7 +140,7 @@ def convertJson():
         collect['tags'] = chinese_tag[index]
         shu[index] = collect
     json_str = json.dumps(shu, ensure_ascii=False)
-    s = "result-" + datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + '.json'
+    s = os.getcwd() + "/json/result-" + datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + '.json'
     host = '127.0.0.1'  # 本机ip地址
     client = MongoClient(host, 27017)  # 建立客户端对象
     write_to_mongodb(client, json_str)
