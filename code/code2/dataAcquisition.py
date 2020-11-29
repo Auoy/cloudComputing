@@ -59,7 +59,7 @@ def savedata(title, s_url, source, media_url, time_table, time_change, chinese_t
     wb = Workbook()
     # if not os.path.isdir(os.getcwd() + '/result'):  # 判断文件夹是否存在
     #     os.makedirs(os.getcwd() + '/result')  # 新建存储文件夹
-    filename = '/home/hadoop/桌面/cloudComputing/code2/result/result-' + datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + '.xlsx'
+    filename = '/home/hadoop/桌面/cloudComputing/code/code2/result/result-' + datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + '.xlsx'
     # 新建存储结果的excel文件
     ws = wb.active
     ws.title = 'data'  # 更改工作表的标题
@@ -137,7 +137,7 @@ def convertJson():
         collect['tags'] = chinese_tag[index]
         shu[index] = collect
     json_str = json.dumps(shu, ensure_ascii=False)
-    s ="/home/hadoop/桌面/cloudComputing/code2/json/result-" + datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + '.json'
+    s ="/home/hadoop/桌面/cloudComputing/code/code2/json/result-" + datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + '.json'
     print(s)
     with open(s, 'w', encoding='utf-8') as json_file:
         json_file.write(json_str)
