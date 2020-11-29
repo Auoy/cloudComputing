@@ -9,18 +9,12 @@ plt.rcParams['font.sans-serif']=['SimHei'] #显示中文标签
 def paint():
     outputs = []
 
-    for filepath, dirnames, filenames in os.walk(r'/home/hadoop/桌面/cloudComputing/code2/output'):
+    for filepath, dirnames, filenames in os.walk(r'/home/hadoop/桌面/cloudComputing/code/code2/output'):
         for dirname in dirnames:
             outputs.append(dirname)
-            #print(':' + dirname)
-    #print(outputs)
     output_path = max(outputs)
 
-    #print(outputs)
-    #print(output_path)
-    filenames = os.listdir(r'/home/hadoop/桌面/cloudComputing/code2/output/' + output_path)
-    #print(filenames)
-   
+    filenames = os.listdir(r'/home/hadoop/桌面/cloudComputing/code/code2/output/' + output_path)
         
     filenames2=[]
     for s in filenames:
@@ -29,10 +23,8 @@ def paint():
     filenames=filenames2
     index = []
     values = []
-    #print(filenames)
     for p in filenames:
-        #print(p)
-        f = open('/home/hadoop/桌面/cloudComputing/code2/output/' + output_path + '/' + p, "rt", encoding="UTF-8")
+        f = open('/home/hadoop/桌面/cloudComputing/code/code2/output/' + output_path + '/' + p, "rt", encoding="UTF-8")
         content = f.read()
         lines = content.splitlines()
         for i in range(len(lines)):
@@ -49,8 +41,8 @@ def paint():
     plt.xlabel('新闻类型')
     plt.ylabel('数量')
     plt.title('现段时间头条热搜新闻类型-数量情况')
-    #plt.savefig('/home/hadoop/桌面/cloudComputing/code2/painting/新闻类型-数量直方图.png')
-    plt.savefig('/home/hadoop/桌面/cloudComputing/code2/painting/新闻类型-数量直方图-'+datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S') + ".png")
+    plt.savefig('/home/hadoop/桌面/cloudComputing/code/code2/painting/新闻类型-数量直方图-'+datetime.datetime.now().strftime('%Y-
+    %m-%d-%H-%M-%S') + ".png")
     #plt.show()
     return
 
